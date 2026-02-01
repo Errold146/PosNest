@@ -1,98 +1,152 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# POS Nest API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white)](https://nestjs.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org)
+[![TypeORM](https://img.shields.io/badge/TypeORM-262626?logo=typeorm&logoColor=white)](https://typeorm.io)
+[![class-validator](https://img.shields.io/badge/class--validator-5A67D8?logo=checkmarx&logoColor=white)](https://github.com/typestack/class-validator)
+[![class-transformer](https://img.shields.io/badge/class--transformer-3182CE?logo=codecov&logoColor=white)](https://github.com/typestack/class-transformer)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API REST para un proyecto de práctica de punto de venta (POS). Implementa CRUD completo para categorías y productos, con validaciones, paginación básica y persistencia en PostgreSQL mediante TypeORM.
 
-## Description
+## ✨ Características
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- CRUD de categorías y productos.
+- Validaciones con `class-validator` y `ValidationPipe` global.
+- Filtro por categoría y paginación simple en listados de productos.
+- Relación `Category (1) -> (N) Product`.
+- Persistencia en PostgreSQL con TypeORM.
 
-## Project setup
+## 🧱 Stack
 
-```bash
-$ npm install
-```
+- NestJS + TypeScript
+- PostgreSQL
+- TypeORM
+- class-validator / class-transformer
 
-## Compile and run the project
+## 📁 Estructura principal
 
-```bash
-# development
-$ npm run start
+- [src/categories](src/categories)
+- [src/products](src/products)
+- [src/common/pipes](src/common/pipes)
+- [src/config](src/config)
 
-# watch mode
-$ npm run start:dev
+## ⚙️ Configuración
 
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
+1) Instalar dependencias
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+2) Variables de entorno
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Crea un archivo `.env` en la raíz con:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+DATABASE_URL=postgres://usuario:password@localhost:5432/posnest
+PORT=3000
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+> Nota: La conexión usa SSL en `typeorm.config.ts`. Para proveedores locales puede requerir `?sslmode=require` o ajustar el SSL según tu entorno.
 
-## Resources
+3) Ejecutar en desarrollo
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+npm run start:dev
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+La API quedará disponible en: `http://localhost:3000`.
 
-## Support
+## 🧪 Scripts útiles
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- `npm run start:dev` → servidor en modo watch
+- `npm run start` → servidor normal
+- `npm run build` → build de producción
+- `npm run test` → pruebas unitarias
+- `npm run test:e2e` → pruebas e2e
 
-## Stay in touch
+## 📚 Endpoints
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Base URL: `http://localhost:3000`
 
-## License
+### Categorías
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+| Método | Endpoint | Descripción |
+|---|---|---|
+| POST | `/categories` | Crear categoría |
+| GET | `/categories` | Listar categorías |
+| GET | `/categories/:id` | Obtener una categoría |
+| PATCH | `/categories/:id` | Actualizar categoría |
+| DELETE | `/categories/:id` | Eliminar categoría |
+
+**Body (crear / actualizar):**
+
+```json
+{
+  "name": "Bebidas"
+}
+```
+
+### Productos
+
+| Método | Endpoint | Descripción |
+|---|---|---|
+| POST | `/products` | Crear producto |
+| GET | `/products` | Listar productos (con filtros) |
+| GET | `/products/:id` | Obtener un producto |
+| PATCH | `/products/:id` | Actualizar producto |
+| DELETE | `/products/:id` | Eliminar producto |
+
+**Query params (opcionales):**
+
+- `category_id` (number): filtra por categoría.
+- `take` (number): límite de resultados (default: 10).
+- `skip` (number): desplazamiento (default: 0).
+
+**Ejemplo:**
+
+```
+GET /products?category_id=1&take=20&skip=0
+```
+
+**Body (crear / actualizar):**
+
+```json
+{
+  "name": "Coca Cola",
+  "price": 1.50,
+  "inventory": 24,
+  "categoryId": 1
+}
+```
+
+> El campo `image` tiene valor por defecto `default.svg` si no se asigna.
+
+## ✅ Validaciones destacadas
+
+- `IdValidationPipe` para parámetros `:id` inválidos.
+- Campos obligatorios en DTOs.
+- `price` admite hasta 2 decimales.
+- `inventory` y `categoryId` son numéricos.
+
+## 🗺️ Próximos pasos (ideas)
+
+- Autenticación y roles.
+- Módulo de ventas y caja.
+- Reportes y métricas.
+- Manejo de imágenes reales.
+
+---
+
+Proyecto de práctica personal con enfoque en buenas prácticas de backend en NestJS.
+
+## 👨‍💻 Autor
+
+Errold Núñez Sánchez
+
+## ✉️ Contacto
+[![GitHub](https://img.shields.io/badge/GitHub-Errold146-181717?logo=github)](https://github.com/Errold146)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-ErroldNúñezS-0A66C2?logo=linkedin)](https://linkedin.com/in/errold-núñez-sánchez) 
+[![Email](https://img.shields.io/badge/Email-ErroldNúñezS-D14836?logo=gmail)](mailto:errold222@gmail.com)
