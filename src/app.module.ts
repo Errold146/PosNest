@@ -5,8 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { typeOrmConfig } from './config/typeorm.config';
-import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './categories/categories.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
 	imports: [
@@ -18,7 +19,8 @@ import { ProductsModule } from './products/products.module';
 			inject: [ConfigService]
 		}),
 		CategoriesModule,
-		ProductsModule
+		ProductsModule,
+		TransactionsModule
 	],
 	controllers: [AppController],
 	providers: [AppService],
