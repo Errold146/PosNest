@@ -15,6 +15,7 @@ API REST para un proyecto de práctica de punto de venta (POS). Implementa CRUD 
 
 - **CRUD de categorías y productos** con relaciones y validaciones.
 - **Módulo de transacciones** con detalles de venta y control de inventario.
+- **Sistema de cupones descuento** con validación de expiración y reactivación.
 - Validaciones con `class-validator` y `ValidationPipe` personalizado.
 - Filtro por categoría y paginación en listados de productos.
 - Filtro por fecha en transacciones.
@@ -36,6 +37,7 @@ API REST para un proyecto de práctica de punto de venta (POS). Implementa CRUD 
 - [src/categories](src/categories) - Gestión de categorías
 - [src/products](src/products) - Gestión de productos
 - [src/transactions](src/transactions) - Gestión de transacciones/ventas
+- [src/coupons](src/coupons) - Gestión de cupones y descuentos
 - [src/common/pipes](src/common/pipes) - Pipes personalizados
 - [src/config](src/config) - Configuraciones globales
 
@@ -135,7 +137,59 @@ GET /products?category_id=1&take=20&skip=0
 
 ---
 
-### Transacciones (Ventas)
+### Cupones
+
+| Método | Endpoint | Descripción |
+|---|---|---|
+| POST | `/coupons` | Crear cupón descuento |
+| GET | `/coupons` | Listar todos los cupones |
+| GET | `/coupons/:id` | Obtener un cupón (válido y no expirado) |
+| PUT | `/coupons/:id` | Actualizar cupón (reactivación incluida) |
+| DELETE | `/coupons/:id` | Eliminar cupón |
+
+**Body (crear / actualizar):**
+
+```json
+{
+  "name": "VERANO2026",
+  "percentage": 15,
+  "expirationDate": "2026-12-31"
+}
+```
+
+**Validaciones:**
+
+- `name`: Requerido, máximo 30 caracteres.
+- `percentage`: Requerido, entero entre 1 y 100.
+- `expirationDate`: Requerido, formato de fecha ISO (`YYYY-MM-DD`).
+
+**Comportamiento especial:**
+
+- El endpoint `GET /coupons/:id` valida automáticamente que el cupón no haya expirado. Si está expirado, retorna `400 Bad Request`.
+- Para **reactivar un cupón expirado** o **extender su vigencia**, utiliza `PUT /coupons/:id` con una nueva fecha en `expirationDate`.
+- El endpoint `PUT /coupons/:id` permite actualizar cupones expirados sin restricciones.
+
+**Respuesta (cupón creado):**
+
+```json
+{
+  "id": 1,
+  "name": "VERANO2026",
+  "percentage": 15,
+  "expirationDate": "2026-12-31"
+}
+```
+
+**Respuesta (error - cupón expirado):**
+
+```json
+{
+  "statusCode": 400,
+  "message": "El cupón ha expirado."
+}
+```
+
+---
 
 | Método | Endpoint | Descripción |
 |---|---|---|
@@ -247,7 +301,8 @@ Category (1) ──→ (N) Product
 - Historial de cambios de precios.
 - Integración con métodos de pago.
 - Manejo de imágenes de productos.
-- Descuentos y promociones.
+- Aplicación de cupones en transacciones (descuentos combinados).
+- Sistema de cupones de uso único o con límite de utilizaciones.
 
 ---
 
