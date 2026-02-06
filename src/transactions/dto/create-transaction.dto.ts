@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import {  ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, ValidateNested } from "class-validator";
+import {  ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
 export class TransactionContentsDto {
     @IsNotEmpty({ message: 'El ID del producto es requerido.' })
@@ -19,6 +19,9 @@ export class CreateTransactionDto {
     @IsNotEmpty({message: 'El Total es requerido.'})
     @IsNumber({}, {message: 'Cantidad Inválida.'})
     total: number
+
+    @IsOptional()
+    coupon: string
 
     @IsArray()
     @ArrayNotEmpty({message: 'Los Contenidos son requeridos.'})

@@ -4,6 +4,7 @@ import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { Product } from 'src/products/entities/product.entity';
+import { CouponsService } from 'src/coupons/coupons.service';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Transaction, TransactionsContents } from './entities/transaction.entity';
@@ -15,6 +16,7 @@ export class TransactionsService {
 		@InjectRepository(Transaction) private readonly transactionRepository: Repository<Transaction>,
 		@InjectRepository(TransactionsContents) private readonly transactionContentsRepository: Repository<TransactionsContents>,
 		@InjectRepository(Product) private readonly productRepository: Repository<Product>,
+		private readonly couponSevice: CouponsService
 	) {}
 
 	async create(createTransactionDto: CreateTransactionDto) {
@@ -22,7 +24,17 @@ export class TransactionsService {
 		await this.productRepository.manager.transaction(async ( transactionEntityManager ) => {
 
 			const transaction = new Transaction()
-			transaction.total = createTransactionDto.contents.reduce((total, item) => total + (item.quantity * item.price), 0)
+			const total = createTransactionDto.contents.reduce((total, item) => total + (item.quantity * item.price), 0)
+			transaction.total = total
+
+			if ( createTransactionDto.coupon ) {
+				const coupon = await this.couponSevice.applyCoupon(createTransactionDto.coupon)
+				
+				const discount = (coupon.percentage / 100) * total
+				transaction.discount = discount
+				transaction.coupon = coupon.name
+				transaction.total -= discount
+			}
 			
 			for(let contents of createTransactionDto.contents) {
 				const product = await transactionEntityManager.findOneBy(Product, {id: contents.productId})
