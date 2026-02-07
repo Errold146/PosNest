@@ -3,7 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, BadReq
 import { CategoriesService } from './categories.service';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { IdValidationPipe } from 'src/common/pipes/id-validation/id-validation.pipe';
+import { IdValidationPipe } from '../common/pipes/id-validation/id-validation.pipe';
 
 @Controller('categories')
 export class CategoriesController {

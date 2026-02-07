@@ -9,6 +9,7 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CouponsModule } from './coupons/coupons.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
 	imports: [
